@@ -5,12 +5,20 @@ public class DrinkOrder {
 	private final Drink drink;
 	private int sugarQuantity;
 	private Double credit;
+	private boolean extraHot = false;
 
-	public DrinkOrder(Drink drink, int sugarQuantity, Double credit) {
-		this.drink = drink;
-		this.sugarQuantity = sugarQuantity;
-		this.credit = credit;
+	public DrinkOrder(DrinkOrderBuilder drinkOrder) {
+		this.drink = drinkOrder.drink;
+		this.sugarQuantity = drinkOrder.sugarQuantity;
+		this.credit = drinkOrder.credit;
+		this.extraHot = drinkOrder.extraHot;
 	}
+
+	public DrinkOrder(JuiceBuilder juiceBuilder) {
+		this.drink = Drink.ORANGE_JUICE;
+		this.credit = juiceBuilder.credit;
+	}
+
 	public Drink drink() {
 		return drink;
 	}
@@ -23,34 +31,58 @@ public class DrinkOrder {
 		return sugarQuantity;
 	}
 
-}
-
-class DrinkOrderBuilder {
-	private Drink drink;
-	private int sugarQuantity;
-	private Double credit;
-
-	public DrinkOrderBuilder withDrink(Drink drink) {
-		this.drink = drink;
-		return this;
+	public boolean isExtraHot() {
+		return extraHot;
 	}
 
-	public DrinkOrderBuilder withSugar(int sugarQuantity) {
-		this.sugarQuantity = sugarQuantity;
-		return this;
+	public static class JuiceBuilder {
+		private Double credit;
+
+		public JuiceBuilder withCredit(Double credit) {
+			this.credit = credit;
+			return this;
+		}
+
+		public DrinkOrder build() {
+			return new DrinkOrder(this);
+		}
 	}
 
-	public DrinkOrderBuilder withNoSugar() {
-		this.sugarQuantity = 0;
-		return this;
-	}
-	
-	public DrinkOrderBuilder withCredit(Double credit) {
-		this.credit = credit;
-		return this;
+	public static class DrinkOrderBuilder {
+		private Drink drink;
+		private int sugarQuantity;
+		private Double credit;
+		private boolean extraHot = false;
+
+		public DrinkOrderBuilder withDrink(Drink drink) {
+			this.drink = drink;
+			return this;
+		}
+
+		public DrinkOrderBuilder withSugar(int sugarQuantity) {
+			this.sugarQuantity = sugarQuantity;
+			return this;
+		}
+
+		public DrinkOrderBuilder withNoSugar() {
+			this.sugarQuantity = 0;
+			return this;
+		}
+
+		public DrinkOrderBuilder withCredit(Double credit) {
+			this.credit = credit;
+			return this;
+		}
+
+		public DrinkOrderBuilder withExtraHot(boolean extraHost) {
+			this.extraHot = extraHost;
+			return this;
+
+		}
+
+		public DrinkOrder build() {
+			return new DrinkOrder(this);
+		}
 	}
 
-	public DrinkOrder build() {
-		return new DrinkOrder(this.drink, this.sugarQuantity, this.credit);
-	}
 }

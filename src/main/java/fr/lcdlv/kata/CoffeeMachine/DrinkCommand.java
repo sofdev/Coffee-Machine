@@ -7,11 +7,12 @@ public class DrinkCommand {
 	public DrinkCommand(DrinkOrder order) {
 		this.order = order;
 	}
+
 	public DrinkCommand() {
 	}
 
 	public String commandeFormatter() {
-		return String.format("%s:%s:%s", this.order.drink().code(),
+		return String.format("%s:%s:%s", this.order.drink().code().concat(order.isExtraHot() ? "h" : ""),
 				this.order.sugarQuantity() > 0 ? this.order.sugarQuantity() : "",
 				this.order.sugarQuantity() > 0 ? 0 : "");
 	}
